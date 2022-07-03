@@ -104,19 +104,23 @@ scaler_ratio = graph_range / temp_range
 historylist = []
 graphlist = []
 
+# Function to scale the temperature value to fit within the dimensions of the graph
 def scaler(temp):
     temp0 = temp - temp_min
     temp1 = int(temp0*scaler_ratio)
     temp2 = graph_min - temp1
     return temp2
 
+# Set up the initial history list using the set temperature as fake data points
 for i in range(0, history_length):
     historylist.append(set_temp)
 
+# Set up the first graph data list using the set temperature as fake data points
 for n in range (0,history_length):
     romper = ((int(n*history_ratio),scaler(historylist[n-1]),int((n+1)*history_ratio)-1, height))
     graphlist.append(romper)
 
+# Function to remove the oldest, and append the newest value to the list of historical data
 def rotate(input):
     del historylist[0]
     historylist.append(input)
@@ -126,24 +130,55 @@ def rotate(input):
         rotatelist.append(romper)
     return rotatelist
 
-################################################################################################
 
+
+
+##################  infinite loop #############################################
 while True:
+        # Read the temperature and rotate the history graphlist
     temperature = read_temp()
     graphlist = rotate(temperature)
-    # Draw a black filled box to clear the image.
+        # Start the countdown and display the data/graph
     for count in range(0, delay):
+        # Clear the image
         draw.rectangle((0, 0, width, height), outline=0, fill=0)
+        # Draw the text
         draw.text((x+1, top + 6), "Temp: " + str(temperature), font=font, fill=255)
+        # Iterate through the graph points
         for r in graphlist:
             draw.rectangle(r, outline=255, fill=255)
+        # Set up the active blinker animation
         if (count % 2) == 0:
             draw.rectangle((int(width*count/delay)-1, 0, width, 1), outline=255, fill=255)
         else:
             draw.rectangle((int(width*count/delay)-1, 0, width, 1), outline=255, fill=255)
             draw.rectangle((int(width*count/delay)-1, 0, int(width*count/delay)+2, 1), outline=0, fill=0)
 
-        # Write one line of text.
+        # Display image.
+        disp.image(image)
+        disp.show()
+        time.sleep(1)
+
+############################  Do it all again, but with inverted colours!  ####################################
+        # Read the temperature and rotate the history graphlist
+    temperature = read_temp()
+    graphlist = rotate(temperature)
+        # Start the countdown and display the data/graph again but with inverted colours
+    for count in range(0, delay):
+        # Clear the image
+        draw.rectangle((0, 0, width, height), outline=255, fill=255)
+        # Draw the text
+        draw.text((x+1, top + 6), "Temp: " + str(temperature), font=font, fill=0)
+        # Iterate through the graph points
+        for r in graphlist:
+            draw.rectangle(r, outline=0, fill=0)
+        # Set up the active blinker animation
+        if (count % 2) == 0:
+            draw.rectangle((int(width*count/delay)-1, 0, width, 1), outline=0, fill=0)
+        else:
+            draw.rectangle((int(width*count/delay)-1, 0, width, 1), outline=0, fill=0)
+            draw.rectangle((int(width*count/delay)-1, 0, int(width*count/delay)+2, 1), outline=255, fill=255)
+
         # Display image.
         disp.image(image)
         disp.show()
