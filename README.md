@@ -16,6 +16,8 @@ With the current settings of temperature to colour conversion, temperatures in t
 The script is set up as a service to enable automatic running/recovery of the script in case of power outages. Note that the script does not use any local saving of the data points, if the data isn't successfully sent to the MQTT server (or on to the influxdb) then the data is lost.
 
 
+Thed temp_mqtt_bigdisplay.py file is the older version, which displays the temperature changes on a graph of an OLED display (Adafruit PiOLED - 128x32 Monochrome OLED). I found the colours of the 8 LEDs to be simpler and clearer to read.
+
 Helpful References:
 
 Wiring of thermometer: https://learn.adafruit.com/adafruits-raspberry-pi-lesson-11-ds18b20-temperature-sensing/hardware
