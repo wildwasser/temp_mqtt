@@ -1,0 +1,16 @@
+/lib/systemd/system/temp_mqtt.service 
+
+[Unit]
+ Description=Temperature monitoring to MQTT
+ After=multi-user.target
+
+ [Service]
+ Type=idle
+ ExecStart=/usr/bin/python /home/pi/temp_mqtt.py
+ TimeoutStartSec=30s
+ TimeoutSec=30s
+ Restart=on-failure
+ RestartSec=30s
+
+ [Install]
+ WantedBy=multi-user.target
