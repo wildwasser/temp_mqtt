@@ -7,6 +7,8 @@ import busio
 from PIL import Image, ImageDraw, ImageFont
 import adafruit_ssd1306
 
+c1 = 50
+c2 = 0
 delay = 1800
 #set up mqtt server connection:
 MQTT_SERVER = '192.168.10.56'
@@ -138,21 +140,21 @@ while True:
         # Read the temperature and rotate the history graphlist
     temperature = read_temp()
     graphlist = rotate(temperature)
-        # Start the countdown and display the data/graph
+        # Start the countdown and display the data/graph again but with inverted colours
     for count in range(0, delay):
         # Clear the image
-        draw.rectangle((0, 0, width, height), outline=0, fill=0)
+        draw.rectangle((0, 0, width, height), outline=c1, fill=c1)
         # Draw the text
-        draw.text((x+1, top + 6), "Temp: " + str(temperature), font=font, fill=255)
+        draw.text((x+1, top + 6), "Temp: " + str(temperature), font=font, fill=c2)
         # Iterate through the graph points
         for r in graphlist:
-            draw.rectangle(r, outline=255, fill=255)
+            draw.rectangle(r, outline=c2, fill=c2)
         # Set up the active blinker animation
         if (count % 2) == 0:
-            draw.rectangle((int(width*count/delay)-1, 0, width, 1), outline=255, fill=255)
+            draw.rectangle((int(width*count/delay)-1, 0, width, 1), outline=c2, fill=c2)
         else:
-            draw.rectangle((int(width*count/delay)-1, 0, width, 1), outline=255, fill=255)
-            draw.rectangle((int(width*count/delay)-1, 0, int(width*count/delay)+2, 1), outline=0, fill=0)
+            draw.rectangle((int(width*count/delay)-1, 0, width, 1), outline=c2, fill=c2)
+            draw.rectangle((int(width*count/delay)-1, 0, int(width*count/delay)+2, 1), outline=c1 fill=c1)
 
         # Display image.
         disp.image(image)
@@ -160,24 +162,24 @@ while True:
         time.sleep(1)
 
 ############################  Do it all again, but with inverted colours!  ####################################
-        # Read the temperature and rotate the history graphlist
+    # Read the temperature and rotate the history graphlist
     temperature = read_temp()
     graphlist = rotate(temperature)
-        # Start the countdown and display the data/graph again but with inverted colours
+        # Start the countdown and display the data/graph
     for count in range(0, delay):
         # Clear the image
-        draw.rectangle((0, 0, width, height), outline=255, fill=255)
+        draw.rectangle((0, 0, width, height), outline=c2, fill=c2)
         # Draw the text
-        draw.text((x+1, top + 6), "Temp: " + str(temperature), font=font, fill=0)
+        draw.text((x+1, top + 6), "Temp: " + str(temperature), font=font, fill=c1)
         # Iterate through the graph points
         for r in graphlist:
-            draw.rectangle(r, outline=0, fill=0)
+            draw.rectangle(r, outline=c1, fill=c1)
         # Set up the active blinker animation
         if (count % 2) == 0:
-            draw.rectangle((int(width*count/delay)-1, 0, width, 1), outline=0, fill=0)
+            draw.rectangle((int(width*count/delay)-1, 0, width, 1), outline=c1, fill=c1)
         else:
-            draw.rectangle((int(width*count/delay)-1, 0, width, 1), outline=0, fill=0)
-            draw.rectangle((int(width*count/delay)-1, 0, int(width*count/delay)+2, 1), outline=255, fill=255)
+            draw.rectangle((int(width*count/delay)-1, 0, width, 1), outline=c1, fill=c1)
+            draw.rectangle((int(width*count/delay)-1, 0, int(width*count/delay)+2, 1), outline=c2, fill=c2)
 
         # Display image.
         disp.image(image)
